@@ -1,0 +1,93 @@
+@charset "UTF-8";
+*{
+    margin: 0px; padding: 0px; border: 0px;
+}
+a{
+    text-decoration: none;
+}
+li{
+    list-style-type: none;
+}
+
+#header{
+    width: 100%;
+    border: 0px red solid;
+}
+
+#header > .gnb{
+    width: 100%;
+    background-color: #353535;
+    border: 0px yellow solid;
+}
+
+#header > .gnb > ul{
+    width: 1000px;
+    height: 30px;
+    border: 0px blue solid;
+    line-height: 30px;
+    margin: 0px auto;
+}
+
+#header > .gnb li{
+    float: left;
+    margin-left: 50px;
+    font-size:  0.9em;
+}
+
+#header > .gnb a{
+    color: #FFFFFF;
+}
+
+#header > .logo{
+    width: 200px;
+    height: 100px;
+    margin: 70px auto;
+    text-align: center;
+    line-height: 100px;
+}
+
+#header > .hit_menu > ul{
+    width: 1000px;
+    border: 0px solid blue;
+    margin: 0px auto;
+    overflow: hidden;
+}
+
+#header > .hit_menu li{
+    float: right;
+    width: 100px;
+    height: 45px;
+    border: 1px solid #CCCCCC;
+    text-align: center;
+    line-height: 45px;
+}
+
+
+
+#header > .hit_menu a{
+    color: #282828; font-size: 1.1em;
+}
+#header > .lnb{
+    width: 100%;
+    border: 1px solid #CCCCCC;
+    border-top-style: dashed;
+    margin: 20px auto;
+}
+#header > .lnb ul{
+    width: 1000px;
+    height: 50px;
+    margin: 0px auto;
+    border: 0px solid blue;
+}
+#header > .lnb li{
+    width: 100px;
+    height: 30px;
+    float: left;
+    margin-left: 20px;
+    text-align: center;
+    line-height: 50px;
+}
+#header > .lnb a{
+    color: #282828;
+    font-size: 1.1em;
+}

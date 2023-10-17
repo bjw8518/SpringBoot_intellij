@@ -1,0 +1,25 @@
+html, body {
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+ol, ul{
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+div, p, span, li, i, a {
+  font-size: 100%;
+}
+/* table - 떨어져있는 칸들을 붙여주는것 */
+
+@media (max-width: 908px) {
+  html, body {
+    font-size: 16px;
+  }
+}

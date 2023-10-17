@@ -1,0 +1,33 @@
+@charset "UTF-8";
+#footer{
+    width: 1000px;
+    margin: 0px auto;
+    border: 0px solid red;
+    overflow: hidden;
+}
+#footer > div{
+    height: 100px;
+    border: 1px solid #CCCCCC;
+    text-align: center;
+    line-height: 100px;
+    border-right-width: 0px;
+    float: left;
+}
+#footer > div:first-child{
+    width: 200px;
+    float: left;
+}
+#footer > div:nth-child(2){
+    width: 490px;
+}
+#footer > div:nth-child(3){
+    width: 300px;
+    border-right-width: 1px;
+}
+#footer > div:nth-child(4){
+    width: 1000px;
+    clear: both;/* float 기능을 지운다. */
+    margin-top: 10px;
+    background-color: #242424;
+    color: #FFFFFF;
+}

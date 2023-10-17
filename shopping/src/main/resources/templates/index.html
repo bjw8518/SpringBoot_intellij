@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>쇼핑몰</title>
+    <link rel="stylesheet" type="text/css" href="css/header.css">
+    <link rel="stylesheet" type="text/css" href="css/content.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+
+</head>
+<body>
+
+<div id="header">
+    <div class="gnb">
+        <ul>
+            <li><a href="#">Login</a></li>
+            <li><a href="#">Join Us</a></li>
+            <li><a href="#">WishList</a></li>
+            <li><a href="#">Cart</a></li>
+            <li><a href="#">Order</a></li>
+            <li><a href="#">My Page</a></li>
+            <li><a href="#">Notice</a></li>
+            <li><a href="#">QnA</a></li>
+            <li><a href="#">Review</a></li>
+            <li><a href="#">Favorite</a></li>
+        </ul>
+    </div>
+    <div class="logo"><img src="img/LOGO.png" style="width:100%"></div>
+
+    <div class="hit_menu">
+        <ul>
+            <li><a href="/add">상품추가</a></li>
+        </ul>
+    </div>
+
+    <div class="lnb">
+        <ul>
+            <li><a href="#">menu1</a></li>
+            <li><a href="#">menu2</a></li>
+            <li><a href="#">menu3</a></li>
+            <li><a href="#">menu4</a></li>
+            <li><a href="#">menu5</a></li>
+            <li><a href="#">menu6</a></li>
+            <li><a href="#">menu7</a></li>
+            <li><a href="#">menu8</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="content">
+
+
+    <div class="section2">
+        <div class="hit_product">
+            <ul>
+                <li th:each="shop : ${shopList}">
+<!--                    <p th:text="${shop.idx}"></p>-->
+<!--                    <p th:text="${shop.photo}"></p> 사진-->
+                    <p th:text="${shop.article}"></p>
+                    <p th:text="${shop.category}"></p>
+                    <p th:text="${shop.price}"></p>
+<!--                    <p th:text="${shop.created}"></p>-->
+                    <p><a th:href="@{'/delete/' + ${shop.idx}}" onclick="confirmDelete();">삭제</a></p>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+<!--        <div class="md_product">-->
+<!--            <ul>-->
+<!--                <li><a href="#">md_product1</a></li>-->
+<!--                <li><a href="#">md_product2</a></li>-->
+<!--                <li><a href="#">md_product3</a></li>-->
+<!--                <li><a href="#">md_product4</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<div id="footer">
+    <div>office_logo</div>
+    <div>office_address</div>
+    <div>shopping_info</div>
+    <div>copyright</div>
+</div>
+</body>
+</html>
