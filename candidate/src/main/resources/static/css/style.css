@@ -1,0 +1,124 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 992px;
+    font-family: "Helvetica";
+}
+
+/* navbar */
+.navbar{
+    height: 60px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.navbar #logo {
+    line-height: 60px;
+    background-color: #d8d8d8;
+    padding: 10px;
+    border-radius:3px;
+}
+.navbar #logo img{
+    vertical-align: middle;
+}
+
+.navbar #menu {
+    float: right;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+.navbar #menu li {
+    float:left;
+    margin-left: 50px;
+    line-height: 60px;
+}
+
+.navbar #menu li a {
+    text-decoration: none;
+    color: #545454 ;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* hero header */
+.hero-header{
+    height: 450px;
+    background-image: url("../images/hero_header.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+
+}
+/* products */
+
+.products h3{
+    font-size: 24px;
+    color: #545454;
+    font-weight: bold;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+.product-list{
+    width: 735px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.product{
+    width: 225px;
+    height: 280px;
+    text-align: center;
+    display: block;
+    color: #545454;
+    text-decoration: none;
+    float: left;
+    margin-left:10px;
+    margin-right: 10px;
+    margin-bottom: 80px;
+
+}
+
+.product_statistics{
+    width: 225px;
+    height: 600px;
+    text-align: center;
+    display: block;
+    color: #545454;
+    text-decoration: none;
+    float: left;
+    margin-left:10px;
+    margin-right: 10px;
+    margin-bottom: 80px;
+
+}
+
+.person-intro{
+    margin-top: 20px;
+    margin-bottom: 4px;
+
+}
+.clearfix{
+    clear: both;
+}
+/* footer */
+.footer{
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 80px;
+
+}
+.footer a{
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+}
+.homeBtn{
+    background-color:#d8d8d8;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 0 auto;
+}

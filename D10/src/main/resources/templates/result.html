@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .wrap {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #333;
+            color: #fff;
+            padding: 5px 0px;
+            text-align: center;
+        }
+
+        td {
+            padding: 5px 0px;
+            text-align: center;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+        $(function(){
+            $.ajax({
+                url : 'r1',
+                method : 'get',
+                success : function(data){
+                    const ctx = document.getElementById('myChart');
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['A후보', 'B후보', 'C후보', 'D후보', 'E후보'],
+                            datasets: [{
+                                label: '# of Votes',
+                                data: [data['count_a'], data['count_b'], data['count_c'], data['count_d'], data['count_e']],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                },
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <h2>후보 선택 결과</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>A후보</th>
+            <th>B후보</th>
+            <th>C후보</th>
+            <th>D후보</th>
+            <th>E후보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${count_a}">0</td>
+            <td th:text="${count_b}">0</td>
+            <td th:text="${count_c}">0</td>
+            <td th:text="${count_d}">0</td>
+            <td th:text="${count_e}">0</td>
+        </tr>
+        </tbody>
+    </table>
+    <canvas id="myChart"></canvas>
+
+    <h2>후보 선택 결과 (남성)</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>A후보</th>
+            <th>B후보</th>
+            <th>C후보</th>
+            <th>D후보</th>
+            <th>E후보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>후보 선택 결과 (여성)</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>A후보</th>
+            <th>B후보</th>
+            <th>C후보</th>
+            <th>D후보</th>
+            <th>E후보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>후보 선택 결과 (20대)</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>A후보</th>
+            <th>B후보</th>
+            <th>C후보</th>
+            <th>D후보</th>
+            <th>E후보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>후보 선택 결과 (30대)</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>A후보</th>
+            <th>B후보</th>
+            <th>C후보</th>
+            <th>D후보</th>
+            <th>E후보</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

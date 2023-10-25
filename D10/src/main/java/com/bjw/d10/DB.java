@@ -3,10 +3,9 @@ package com.bjw.d10;
 import org.sqlite.SQLiteConfig;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.lang.reflect.Method;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class DB<T> {
     String dbFileName = "";
@@ -83,47 +82,292 @@ public class DB<T> {
         Class<?> dataClass = t.getClass();
         Field[] dataClassFields = dataClass.getDeclaredFields();
 
-        String fieldQuery = "";
-        String valueQuery = "";
+        String fields = "";
+        String values = "";
         for (Field field : dataClassFields) {
             String fieldType = field.getType().toString();
             String fieldName = field.getName();
-
-            if (!fieldQuery.isEmpty()) {
-                fieldQuery = fieldQuery + ",";
-            }
-            if (!valueQuery.isEmpty()) {
-                valueQuery = valueQuery + ",";
+            if (fieldName.matches("idx") && fieldType.matches("int")) {
+                continue;
             }
 
-            try {
-                if (fieldName.matches("idx") && fieldType.matches("int")) {
-                    continue;
-                } else if (fieldType.matches("int")) {
-                    fieldQuery = fieldQuery + fieldName;
-                    valueQuery = valueQuery + field.get(insertObject);
-                } else if (fieldType.matches("(double|float)")) {
-                    fieldQuery = fieldQuery + fieldName;
-                    valueQuery = valueQuery + field.get(insertObject);
-                } else if (fieldType.matches(".*String")) {
-                    fieldQuery = fieldQuery + fieldName;
-                    valueQuery = valueQuery + "'" + field.get(insertObject) + "'";
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (!fields.isEmpty()) {
+                fields = fields + ",";
             }
+            fields = fields + fieldName;
+            if (!values.isEmpty()) {
+                values = values + ",";
+            }
+            values = values + "?";
         }
-        String queryString = "INSERT INTO " + this.tableName + " (" + fieldQuery + ")" + " VALUES (" + valueQuery + ")";
+        String queryString = "INSERT INTO " + this.tableName + " (" + fields + ")" + " VALUES (" + values + ")";
 
         this.open();
         try {
-            Statement statement = this.connection.createStatement();
-            statement.execute(queryString);
-            statement.close();
+            PreparedStatement preparedStatement = this.connection.prepareStatement(queryString);
+            int valueIndex = 1;
+            for (Field field : dataClassFields) {
+                String fieldType = field.getType().toString();
+                String fieldName = field.getName();
+                if (fieldName.matches("idx") && fieldType.matches("int")) {
+                    continue;
+                }
+                String getterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                if (fieldType.matches("int")) {
+                    int getValue = 0;
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (int) getter.invoke(insertObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = field.getInt(insertObject);
+                    }
+                    preparedStatement.setInt(valueIndex, getValue);
+                } else if (fieldType.matches("float")) {
+                    float getValue = 0;
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (float) getter.invoke(insertObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = field.getFloat(insertObject);
+                    }
+                    preparedStatement.setFloat(valueIndex, getValue);
+                } else if (fieldType.matches("double")) {
+                    double getValue = 0;
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (double) getter.invoke(insertObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = field.getDouble(insertObject);
+                    }
+                    preparedStatement.setDouble(valueIndex, getValue);
+                } else if (fieldType.matches(".*String")) {
+                    String getValue = "";
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (String) getter.invoke(insertObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = (String) field.get(insertObject);
+                    }
+                    preparedStatement.setString(valueIndex, getValue);
+                } else {
+                    preparedStatement.setString(valueIndex, "");
+                }
+                valueIndex++;
+            }
+            preparedStatement.execute();
+            preparedStatement.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         this.close();
     }
 
+    public void updateData(T updateObject) {
+        Class<?> dataClass = t.getClass();
+        Field[] dataClassFields = dataClass.getDeclaredFields();
+
+        String setValue = "";
+        int whereIdx = -1;
+        for (Field field : dataClassFields) {
+            String fieldType = field.getType().toString();
+            String fieldName = field.getName();
+            if (fieldName.matches("idx") && fieldType.matches("int")) {
+                try {
+                    whereIdx = field.getInt(updateObject);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                continue;
+            }
+
+            if (!setValue.isEmpty()) {
+                setValue = setValue + ",";
+            }
+            setValue = setValue + fieldName + "=?";
+        }
+        String queryString = "UPDATE " + this.tableName + " SET " + setValue + " WHERE idx=" + whereIdx;
+
+        this.open();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(queryString);
+            int valueIndex = 1;
+            for (Field field : dataClassFields) {
+                String fieldType = field.getType().toString();
+                String fieldName = field.getName();
+                if (fieldName.matches("idx") && fieldType.matches("int")) {
+                    continue;
+                }
+                String getterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                if (fieldType.matches("int")) {
+                    int getValue = 0;
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (int) getter.invoke(updateObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = field.getInt(updateObject);
+                    }
+                    preparedStatement.setInt(valueIndex, getValue);
+                } else if (fieldType.matches("float")) {
+                    float getValue = 0;
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (float) getter.invoke(updateObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = field.getFloat(updateObject);
+                    }
+                    preparedStatement.setFloat(valueIndex, getValue);
+                } else if (fieldType.matches("double")) {
+                    double getValue = 0;
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (double) getter.invoke(updateObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = field.getDouble(updateObject);
+                    }
+                    preparedStatement.setDouble(valueIndex, getValue);
+                } else if (fieldType.matches(".*String")) {
+                    String getValue = "";
+                    try {
+                        Method getter = dataClass.getDeclaredMethod(getterName);
+                        getValue = (String) getter.invoke(updateObject);
+                    } catch (NoSuchMethodException e) {
+                        getValue = (String) field.get(updateObject);
+                    }
+                    preparedStatement.setString(valueIndex, getValue);
+                } else {
+                    preparedStatement.setString(valueIndex, "");
+                }
+                valueIndex++;
+            }
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.close();
+    }
+
+    public boolean deleteData(T deleteObject) {
+        Class<?> dataClass = t.getClass();
+        Field[] dataClassFields = dataClass.getDeclaredFields();
+
+        int whereIdx = -1;
+        for (Field field : dataClassFields) {
+            String fieldType = field.getType().toString();
+            String fieldName = field.getName();
+            if (fieldName.matches("idx") && fieldType.matches("int")) {
+                try {
+                    whereIdx = field.getInt(deleteObject);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                continue;
+            }
+        }
+        String queryString = "DELETE FROM " + this.tableName + " WHERE idx=" + whereIdx;
+
+        this.open();
+        int result = 0;
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(queryString);
+            result = preparedStatement.executeUpdate();
+            System.out.println(result);
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.close();
+
+        if (result > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<T> selectData() {
+        Class<?> dataClass = t.getClass();
+        Field[] dataClassFields = dataClass.getDeclaredFields();
+
+        String queryString = "SELECT * FROM " + this.tableName;
+        ArrayList<T> list = new ArrayList<T>();
+
+        this.open();
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(queryString);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                T fieldData = (T) dataClass.getDeclaredConstructor().newInstance();
+                for (Field field : dataClassFields) {
+                    String fieldType = field.getType().toString();
+                    String fieldName = field.getName();
+                    if (fieldType.matches("int")) {
+                        field.setInt(fieldData, resultSet.getInt(fieldName));
+                    } else if (fieldType.matches("float")) {
+                        field.setFloat(fieldData, resultSet.getFloat(fieldName));
+                    } else if (fieldType.matches("double")) {
+                        field.setDouble(fieldData, resultSet.getDouble(fieldName));
+                    } else {
+                        field.set(fieldData, resultSet.getString(fieldName));
+                    }
+                }
+                list.add(fieldData);
+            }
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.close();
+
+        return list;
+    }
+
+    public T detailData(T detailData) {
+        Class<?> dataClass = t.getClass();
+        Field[] dataClassFields = dataClass.getDeclaredFields();
+
+        int whereIdx = -1;
+        for (Field field : dataClassFields) {
+            String fieldType = field.getType().toString();
+            String fieldName = field.getName();
+            if (fieldName.matches("idx") && fieldType.matches("int")) {
+                try {
+                    whereIdx = field.getInt(detailData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+        String queryString = "SELECT * FROM " + this.tableName + " WHERE idx=" + whereIdx;
+        T resultData = null;
+
+        this.open();
+        try {
+            resultData = (T) dataClass.getDeclaredConstructor().newInstance();
+
+            PreparedStatement preparedStatement = this.connection.prepareStatement(queryString);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                for (Field field : dataClassFields) {
+                    String fieldType = field.getType().toString();
+                    String fieldName = field.getName();
+                    if (fieldType.matches("int")) {
+                        field.setInt(resultData, resultSet.getInt(fieldName));
+                    } else if (fieldType.matches("float")) {
+                        field.setFloat(resultData, resultSet.getFloat(fieldName));
+                    } else if (fieldType.matches("double")) {
+                        field.setDouble(resultData, resultSet.getDouble(fieldName));
+                    } else {
+                        field.set(resultData, resultSet.getString(fieldName));
+                    }
+                }
+            }
+            preparedStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.close();
+
+        return resultData;
+    }
 }

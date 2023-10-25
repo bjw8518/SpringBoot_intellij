@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        form {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #eee;
+            border: 2px solid #999;
+            border-radius: 10px;
+        }
+        [type="submit"] {
+            width: 100%;
+            padding: 10px 0px;
+        }
+    </style>
+</head>
+<body>
+<form action="insert">
+    <h2>후보</h2>
+    <label><input type="radio" name="target" value="A" />A후보</label>
+    <label><input type="radio" name="target" value="B" />B후보</label>
+    <label><input type="radio" name="target" value="C" />C후보</label>
+    <label><input type="radio" name="target" value="D" />D후보</label>
+    <label><input type="radio" name="target" value="E" />E후보</label>
+
+    <h2>투표자 정보</h2>
+    <label><input type="radio" name="sex" value="male" />남자</label>
+    <label><input type="radio" name="sex" value="female" />여자</label>
+    <br />
+    <input type="number" placeholder="나이" name="age" />
+    <br />
+    <br />
+    <input type="submit" value="입력 완료" />
+</form>
+</body>
+</html>

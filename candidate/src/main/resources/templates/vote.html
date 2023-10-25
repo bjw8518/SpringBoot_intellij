@@ -1,0 +1,50 @@
+<!--vote.html-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>투표</title>
+</head>
+<body>
+
+<form action="/vote" method="post" enctype="multipart/form-data">
+    <label for="sex">성별:</label>
+    <select id="sex" name="sex" required>
+        <option value="남자">남자</option>
+        <option value="여자">여자</option>
+
+    </select><br>
+
+    <label for="age">나이:</label>
+    <input type="number" id="age" name="age" required><br>
+
+    <label for="vote">투표할 후보자:</label>
+    <select id="vote" name="vote" required>
+        <option value="이승만">이승만</option>
+        <option value="윤보선">윤보선</option>
+        <option value="박정희">박정희</option>
+        <option value="최규하">최규하</option>
+        <option value="전두환">전두환</option>
+        <option value="노태우">노태우</option>
+    </select><br>
+
+
+
+
+    <button type="submit">등록</button>
+</form>
+<br>
+<a href="/">메인 페이지로 돌아가기</a>
+
+<p>
+<ul>
+    <li th:each="candidate : ${CandidateList}">
+        <p th:text="${candidate.sex}"></p>
+        <p th:text="${candidate.age}"></p>
+        <p th:text="${candidate.vote}"></p>
+        <p><a th:href="@{'/delete/' + ${candidate.idx}}" onclick="confirmDelete();">삭제</a></p>
+    </li>
+</ul>
+</p>
+</body>
+</html>
